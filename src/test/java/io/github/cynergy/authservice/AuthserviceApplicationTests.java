@@ -1,10 +1,10 @@
-package com.hardik.hardiklogin;
+package io.github.cynergy.authservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HardikloginApplicationTests {
+class AuthserviceApplicationTests {
 
 	@Test
 	void contextLoads() {

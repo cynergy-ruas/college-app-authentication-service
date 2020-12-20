@@ -9,11 +9,11 @@
 		<version>2.3.4.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.hardik</groupId>
-	<artifactId>hardiklogin</artifactId>
+	<groupId>io.github.cynergy</groupId>
+	<artifactId>authservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>hardiklogin</name>
-	<description>Demo project for Spring Boot</description>
+	<name>authservice</name>
+	<description>Authentication service for the college app</description>
 
 	<properties>
 		<java.version>1.8</java.version>

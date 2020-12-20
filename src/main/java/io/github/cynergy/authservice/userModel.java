@@ -1,4 +1,4 @@
-package com.hardik.hardiklogin;
+package io.github.cynergy.authservice;
 
 public class userModel {
 

@@ -1,4 +1,4 @@
-package com.hardik.hardiklogin;
+package io.github.cynergy.authservice;
 
 import java.awt.print.Book;
 import java.io.IOException;
