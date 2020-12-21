@@ -13,18 +13,15 @@ contact repo admin for the google service accounts file.
 ## Production
 
 Make sure the google service accounts file is present in the root directory of the project as `service-accounts.json`.
-Build the application using,
+Build the image using,
 ```
-$ ./mvnw package
-```
-
-Then run,
-```
-$ mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
-$ docker build -t authservice:0.0.1 .
+$ ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=cynergyruas/ruas-app:auth-service-0.0.1
 ```
 
 To run the docker container,
 ```
-$ docker run -p 8080:8080 -e MONGODB_URI=<mongo-uri> authservice:0.0.1
+docker run -p 8080:8080 -v $(pwd)/service-account.json:/workspace/service-account.json \
+    -e GOOGLE_APPLICATION_CREDENTIALS=/workspace/service-account.json  \
+    -e MONGODB_URI=<mongodb uri> \
+    cynergyruas/ruas-app:auth-service-0.0.1
 ```
