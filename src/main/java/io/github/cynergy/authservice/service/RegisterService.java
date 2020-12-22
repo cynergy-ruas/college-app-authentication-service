@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import io.github.cynergy.authservice.database.UserDao;
 import io.github.cynergy.authservice.model.User;
 import io.github.cynergy.authservice.utils.AuthException;
+import io.github.cynergy.authservice.utils.UserNotFoundException;
+import io.github.cynergy.authservice.utils.UserExistsException;
 
 @Service
 public class RegisterService {
@@ -24,24 +26,30 @@ public class RegisterService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    public String register(User user) throws AuthException {
-        // generating a user id for the user
-        user.setUid(generateUserId());
+    public String register(User user) throws AuthException, UserExistsException {
 
-        // hashing the password
-        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+        try {
+            this.dao.getUser(user.getRollNumber());
+            
+            // since the get user operation succeded without error, that means a user with the given roll
+            // number already exists, so throwing an error
+            throw new UserExistsException();
 
-        // adding the user to the database
-        this.dao.addUser(user);
+        } catch (UserNotFoundException e) {
+            // hashing the password
+            user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
-        // generating token
-        String token = tokenService.generateToken(user);
+            // adding the user to the database
+            String userId = this.dao.addUser(user);
 
-        // returning token
-        return token;
-    }
+            // adding the user id to the usr
+            user.setUid(userId);
 
-    private String generateUserId() {
-        return UUID.randomUUID().toString();
+            // generating token
+            String token = tokenService.generateToken(user);
+
+            // returning token
+            return token;
+        }
     }
 }

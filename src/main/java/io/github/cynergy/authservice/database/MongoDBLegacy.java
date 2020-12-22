@@ -54,12 +54,18 @@ public class MongoDBLegacy implements UserDao {
 	}
 
 	@Override
-	public void addUser(User user) {
+	public String addUser(User user) {
 		// getting reference to user collection
 		MongoCollection<Document> userCollection = this.userDb.getCollection(userCollectionName);
 		
+		// converting user object into a document
+		Document userDoc = createUserDocument(user);
+
 		// adding user to db
-		userCollection.insertOne(createUserDocument(user));
+		userCollection.insertOne(userDoc);
+
+		// returning the id
+		return userDoc.get("_id").toString();
 	}
 
 	/**
@@ -68,7 +74,7 @@ public class MongoDBLegacy implements UserDao {
 	 * @return the document
 	 */
 	private Document createUserDocument(User user) {
-		Document userDoc = new Document("_id", user.getUid());
+		Document userDoc = new Document();
 
 		userDoc.append(rollNumberField, user.getRollNumber())
 			.append(passwordField, user.getPassword())
@@ -84,7 +90,7 @@ public class MongoDBLegacy implements UserDao {
 	 */
 	private User docToUser(Document userDoc) {
 		return new User(
-			(String) userDoc.get("_id"),
+			(String) userDoc.get("_id").toString(),
 			(String) userDoc.get(rollNumberField),
 			(String) userDoc.get(passwordField),
 			(int) userDoc.get(clearanceField)

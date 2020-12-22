@@ -13,6 +13,7 @@ import io.github.cynergy.authservice.service.RegisterService;
 import io.github.cynergy.authservice.utils.AuthException;
 import io.github.cynergy.authservice.utils.InvalidPasswordException;
 import io.github.cynergy.authservice.utils.UserNotFoundException;
+import io.github.cynergy.authservice.utils.UserExistsException;
 
 @RequestMapping("auth")
 @RestController
@@ -27,7 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    TokenResponse register(@RequestBody User user) throws AuthException {
+    TokenResponse register(@RequestBody User user) throws AuthException, UserExistsException {
         String token = this.registerService.register(user);
         return new TokenResponse(token);
     }

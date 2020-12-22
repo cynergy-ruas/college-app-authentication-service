@@ -16,5 +16,5 @@ public interface UserDao {
      * Adds the user to the database.
      * @param user
      */
-    public void addUser(User user);
+    public String addUser(User user);
 }
